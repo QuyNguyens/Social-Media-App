@@ -1,20 +1,23 @@
-"use client"
+"use client";
 
-import { validateRequest } from "@/auth"
+import { validateRequest } from "@/auth";
 import { redirect } from "next/navigation";
-import { useEffect } from "react";
 
-export function logout(){
-    useEffect(() =>{
-        const fetUser = async () =>{
-            const {user} = await validateRequest();
-            if(user == null){
-                throw new Error("Unauthorized");
-            }
-        }
-        fetUser();
-    },[])
-
-
-    return redirect("/login")
+export function logout() {
+    return new Promise<void>((resolve, reject) => {
+        validateRequest()
+            .then(({ user }) => {
+                if (user == null) {
+                    reject(new Error("Unauthorized"));
+                    return;
+                }
+                localStorage.removeItem("access_token");
+                redirect("/login");
+                resolve();
+            })
+            .catch((error) => {
+                console.error("Logout error:", error);
+                reject(error);
+            });
+    });
 }
