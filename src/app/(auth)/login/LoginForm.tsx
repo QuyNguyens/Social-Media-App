@@ -7,7 +7,6 @@ import { useState, useTransition } from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { login } from "./actions";
-import { Button } from "@/components/ui/button";
 import LoadingButton from "@/components/LoadingButton";
 import { redirect } from "next/navigation";
 

@@ -1,14 +1,20 @@
-"use server"
+"use client"
 
 import { validateRequest } from "@/auth"
 import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
-export async function logout(){
-    const user = await validateRequest();
+export function logout(){
+    useEffect(() =>{
+        const fetUser = async () =>{
+            const {user} = await validateRequest();
+            if(user == null){
+                throw new Error("Unauthorized");
+            }
+        }
+        fetUser();
+    },[])
 
-    if(Object.keys(user).length == 0){
-        throw new Error("Unauthorized");
-    }
 
     return redirect("/login")
 }
