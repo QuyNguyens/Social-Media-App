@@ -7,12 +7,15 @@ import { submitPost } from "./actions";
 import UserAvatar from "@/components/UserAvatar";
 import { useSession } from "@/app/(main)/SessionProvider";
 import { Button } from "@/components/ui/button";
+import { useQueryClient } from "@tanstack/react-query";
 
 import "./style.css";
 
-export default function PostEditor( {refreshPosts } : {refreshPosts : () => void}){
+export default function PostEditor(){
 
     const {user} = useSession();
+    const queryClient = useQueryClient();
+
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
@@ -32,7 +35,7 @@ export default function PostEditor( {refreshPosts } : {refreshPosts : () => void
     async function onSubmit(){
         await submitPost(input);
         editor?.commands.clearContent();
-        refreshPosts();
+        queryClient.invalidateQueries({ queryKey: ["post-feed", "for-you"] });
     }
 
     return (

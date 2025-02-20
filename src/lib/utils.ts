@@ -5,17 +5,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatRelativeDate(from : string){
+export function formatRelativeDate(from : Date){
   const currentDate = new Date();
-  const formattedDateString = from.replace(" ", "T");
-  const dateObj = new Date(formattedDateString);
-  if (currentDate.getTime() - dateObj.getTime() < 24 * 60 *60 * 1000){
-    return formatDistanceToNowStrict(dateObj, {addSuffix: true})
+  if (currentDate.getTime() - from.getTime() < 24 * 60 *60 * 1000){
+    return formatDistanceToNowStrict(from, {addSuffix: true})
   }else{
-    if(currentDate.getFullYear() === dateObj.getFullYear()){
-      return formatDate(dateObj, "MMM d");
+    if(currentDate.getFullYear() === from.getFullYear()){
+      return formatDate(from, "MMM d");
     }else{
-      return formatDate(dateObj, "MMM d, yyy");
+      return formatDate(from, "MMM d, yyy");
     }
   }
 }

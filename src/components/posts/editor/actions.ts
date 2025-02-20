@@ -8,8 +8,6 @@ export async function submitPost(input: string): Promise<{ error: string; succes
     try {
         const { user } = await validateRequest();
 
-        console.log("user: ", user);
-        
         if (!user) throw new Error("Unauthorized");
 
         const { content } = createPostSchema.parse({ content: input });
@@ -17,7 +15,6 @@ export async function submitPost(input: string): Promise<{ error: string; succes
         const urlCreatePost = `${process.env.NEXT_PUBLIC_API_URL}/api/Post/create-post/${user.id}`;
 
         const token = localStorage.getItem("access_token");
-        console.log("token: ", token);
 
         const res = await fetch(urlCreatePost, {
             method: "POST",
