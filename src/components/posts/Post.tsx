@@ -17,15 +17,15 @@ export default function Post({post} : PostProps){
     return <article className="group/post space-y-3 rounded-2xl bg-card p-5 shadow-sm">
             <div className="flex justify-between gap-3">
                 <div className="flex flex-wrap gap-3">
-                    <Link href={`/users/${user.userName}`}>
-                        <UserAvatar avatarUrl={user.avatar}/>
+                    <Link href={`/users/${post.userName}`}>
+                        <UserAvatar avatarUrl={post.avatar}/>
                     </Link>
                     <div>
                         <Link 
-                            href={`/users/${user.userName}`}
+                            href={`/users/${post.userName}`}
                             className="block font-medium hover:underline"
                         >
-                            {user.userName}
+                            {post.userName}
                         </Link>
                         <Link 
                             href={`/posts/${post.id}`}

@@ -3,7 +3,8 @@ export interface Post{
     content: string;
     createAt: Date;
     userId: string;
-
+    userName?: string;
+    avatar?: string;
 }
 
 export interface User{

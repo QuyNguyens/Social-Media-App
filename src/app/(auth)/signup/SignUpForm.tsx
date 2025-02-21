@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { useState, useTransition } from "react";
 import { signUp } from "./actions";
 import LoadingButton from "@/components/LoadingButton";
+import { redirect } from "next/navigation";
 
 const SignUpForm = () => {
   
@@ -28,9 +29,10 @@ const SignUpForm = () => {
         setError(undefined);
 
         startTransition(async () =>{
-            const {error} = await signUp(values);
-
-            if(error) setError(error)
+            const {error,success} = await signUp(values);
+            console.log("success: ", success);
+            if(success) redirect('/login')
+            else setError(error)
         })
     }
 

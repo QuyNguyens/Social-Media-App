@@ -14,8 +14,6 @@ import DeletePostDialog from "@/components/posts/DeletePostDialog";
 const PAGE_SIZE = 10;
 export default function ForYouFeed() {
 
-    const {user} = useSession();
-    
     const {
         data,
         fetchNextPage,
@@ -28,10 +26,9 @@ export default function ForYouFeed() {
         queryFn: ({ pageParam = null }: { pageParam?: string | null }) =>
           kyInstance
             .get(
-              `${process.env.NEXT_PUBLIC_API_URL}/api/Post/posts`,
+              `${process.env.NEXT_PUBLIC_API_URL}/api/Post/get-all-posts`,
                {
                 searchParams: new URLSearchParams({
-                  userId: user?.id?.toString() || "",
                   cursor: pageParam ?? "",
                   pageSize: PAGE_SIZE.toString()
                 })
@@ -40,7 +37,6 @@ export default function ForYouFeed() {
             .json<PostsPage>(),
         initialPageParam: null as string | null,
         getNextPageParam: (lastPage) => lastPage.nextCursor,
-        enabled: !!user?.id,
         staleTime: 1000 * 60 * 5,
       });
     
