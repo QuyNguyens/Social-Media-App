@@ -1,7 +1,7 @@
 "use client"
 
+import { User } from "@/lib/types";
 import React, { createContext, useContext } from "react";
-import { User } from "../types/user";
 
 export interface SessionContext{
     user: User

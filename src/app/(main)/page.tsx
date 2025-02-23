@@ -3,9 +3,9 @@
 import PostEditor from "@/components/posts/editor/PostEditor";
 import TrendsSidebar from "@/components/TrendsSidebar";
 import ForYouFeed from "./ForYouFeed";
-import { useEffect, useState } from "react";
-import { validateRequest } from "@/auth";
-import { redirect } from "next/navigation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import FollowFeed from "./FollowFeed";
+import { useSession } from "./SessionProvider";
 
 export default function Home() {
 
@@ -16,13 +16,26 @@ export default function Home() {
     //     }
     //     getUser()
     //   }, [])
+    const {user} = useSession()
   return (
     <main className="w-full min-w-0 flex gap-5">
         <div className="w-full min-w-0 space-y-5">
           <PostEditor/>
-          <ForYouFeed/>
+          <Tabs defaultValue="for-you">
+            <TabsList className="mb-3">
+              <TabsTrigger value="for-you">For you</TabsTrigger>
+              <TabsTrigger value="following">Following</TabsTrigger>
+            </TabsList>
+            <TabsContent value="for-you">
+              <ForYouFeed/>
+            </TabsContent>
+            <TabsContent value="following">
+              <FollowFeed userId={user.id} urlSub="following"/>
+            </TabsContent>
+
+          </Tabs>
         </div>
-        <TrendsSidebar/>
+       <TrendsSidebar userId={user.id} isLoadAll={true}/>
       </main>
   );
 }

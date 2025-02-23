@@ -36,6 +36,7 @@ export default function PostEditor(){
         await submitPost(input);
         editor?.commands.clearContent();
         queryClient.invalidateQueries({ queryKey: ["post-feed", "for-you"] });
+        queryClient.invalidateQueries({ queryKey: ["trend-topics", user.id] });
     }
 
     return (

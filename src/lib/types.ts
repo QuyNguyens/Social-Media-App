@@ -5,6 +5,7 @@ export interface Post{
     userId: string;
     userName?: string;
     avatar?: string;
+    email?: string;
 }
 
 export interface User{
@@ -13,9 +14,30 @@ export interface User{
     email: string,
     phone?: string,
     avatar?: string,
+    createAt?: Date
 }
 
 export interface PostsPage {
     posts: Post[];
     nextCursor: string | null;
+}
+
+export interface FollowerInfo{
+    followers: number;
+    isFollowedByUser: boolean;
+}
+
+export interface Followers{
+    id : string;
+    email : string;
+    avatar : string;
+    userName : string ;
+    isFollowed : boolean;
+    createAt : Date;
+}
+
+export interface UserProfileInfo{
+    user: Followers;
+    postCount: number;
+    followerCount: number;
 }

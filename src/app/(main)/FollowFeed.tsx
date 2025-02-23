@@ -1,18 +1,20 @@
-"use client";
-
+import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
+import DeletePostDialog from "@/components/posts/DeletePostDialog";
 import Post from "@/components/posts/Post";
-import { Button } from "@/components/ui/button";
+import PostsLoadingSkeleton from "@/components/posts/PostsLoadingSkeleton";
 import kyInstance from "@/lib/ky";
 import { PostsPage } from "@/lib/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
-import PostsLoadingSkeleton from "@/components/posts/PostsLoadingSkeleton";
-import DeletePostDialog from "@/components/posts/DeletePostDialog";
 
 const PAGE_SIZE = 10;
-export default function ForYouFeed() {
 
+interface FollowFeedProps{
+  userId: string;
+  urlSub: string;
+}
+
+const FollowFeed = ({userId, urlSub}: FollowFeedProps) => {
     const {
         data,
         fetchNextPage,
@@ -21,13 +23,14 @@ export default function ForYouFeed() {
         isFetchingNextPage,
         status,
       } = useInfiniteQuery({
-        queryKey: ["post-feed", "for-you"],
+        queryKey: ["post-feed", "following", userId],
         queryFn: ({ pageParam = null }: { pageParam?: string | null }) =>
           kyInstance
             .get(
-              `${process.env.NEXT_PUBLIC_API_URL}/api/Post/get-all-posts`,
+              `${process.env.NEXT_PUBLIC_API_URL}/api/Post/${urlSub}`,
                {
                 searchParams: new URLSearchParams({
+                  id: userId,
                   cursor: pageParam ?? "",
                   pageSize: PAGE_SIZE.toString()
                 })
@@ -49,7 +52,7 @@ export default function ForYouFeed() {
   if (status === "success" && !posts.length && !hasNextPage) {
     return (
       <p className="text-center text-muted-foreground">
-        No one has posted anything yet.
+        No following has posted anything yet.
       </p>
     );
   }
@@ -79,3 +82,5 @@ export default function ForYouFeed() {
         </InfiniteScrollContainer>
       );
 }
+
+export default FollowFeed

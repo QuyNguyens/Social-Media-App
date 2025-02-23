@@ -4,6 +4,7 @@ import LoadingButton from "../LoadingButton";
 import { deletePost } from "./actions";
 import { Button } from "../ui/button";
 import { useQueryClient } from "@tanstack/react-query";
+import { useSession } from "@/app/(main)/SessionProvider";
 
 interface DeletePostDialogProps{
     post: Post;
@@ -17,6 +18,8 @@ const DeletePostDialog = ({
     open,
     onClose
 } : DeletePostDialogProps) => {
+
+    const {user} = useSession();
 
     const queryClient = useQueryClient();
 
@@ -42,6 +45,7 @@ const DeletePostDialog = ({
                         await deletePost(post.id);
                         onClose();
                         queryClient.invalidateQueries({ queryKey: ["post-feed", "for-you"] });
+                        queryClient.invalidateQueries({ queryKey: ["trend-topics", user.id] });
                     }}
                 >
                     Delete

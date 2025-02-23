@@ -1,6 +1,5 @@
 import ky from "ky";
 
-console.log("vao day");
 const kyInstance = ky.create({
     parseJson : (text) => 
         JSON.parse(text, (key, value) =>{
