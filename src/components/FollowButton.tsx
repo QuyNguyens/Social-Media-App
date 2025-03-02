@@ -20,9 +20,12 @@ const FollowButton = ({ userFollower, isFollowed, onFollowChange }: FollowButton
         const urlUnFollow = `${process.env.NEXT_PUBLIC_API_URL}/api/Follow/unfollow`;
 
         const req = { UserId: user.id, UserIdFollow: userFollower.id };
-
         
-        !isFollowed ? await kyInstance.post(urlFollow, { json: req }) : await kyInstance.post(urlUnFollow, { json: req });
+        if (!isFollowed) {
+            await kyInstance.post(urlFollow, { json: req });
+        } else {
+            await kyInstance.post(urlUnFollow, { json: req });
+        }
         
         queryClient.setQueryData(["follower-info", user.id], (oldData: Followers[] | undefined) => {
             if (!oldData) return [];
