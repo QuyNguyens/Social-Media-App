@@ -58,7 +58,7 @@ const FollowButton = ({ userFollower, isFollowed, onFollowChange }: FollowButton
     return (
         <Button
             variant={isFollowed ? "secondary" : "default"}
-            onClick={followHandle}
+            onClick={() => followHandle()}
         >
             {isFollowed ? "UnFollow" : "Follow"}
         </Button>

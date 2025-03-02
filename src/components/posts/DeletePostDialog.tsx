@@ -1,6 +1,5 @@
 import { Post } from "@/lib/types";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
-import LoadingButton from "../LoadingButton";
 import { deletePost } from "./actions";
 import { Button } from "../ui/button";
 import { useQueryClient } from "@tanstack/react-query";

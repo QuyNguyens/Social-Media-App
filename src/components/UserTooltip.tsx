@@ -5,8 +5,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/t
 import Link from "next/link";
 import UserAvatar from "./UserAvatar";
 import FollowButton from "./FollowButton";
-import Linkify from "./Linkify";
-
 interface UserToolTipProps extends PropsWithChildren{
     user: Post
 }

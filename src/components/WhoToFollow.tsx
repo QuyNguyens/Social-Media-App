@@ -1,8 +1,7 @@
 import Link from "next/link";
 import UserAvatar from "./UserAvatar";
 import FollowButton from "./FollowButton";
-import userFollowerInfo from "@/hooks/userFollowerInfo";
-import { useSession } from "@/app/(main)/SessionProvider";
+import userFollowerInfo from "@/hooks/useFollowerInfo";
 import { Loader2 } from "lucide-react";
 
 interface WhoToFollowProps{

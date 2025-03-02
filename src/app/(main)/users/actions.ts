@@ -13,10 +13,10 @@ export async function getUserByEmail({ userId, email }: UserInfoProps) {
             searchParams: new URLSearchParams({ userId, email })
         }).json<UserProfileInfo>();
 
-        console.log('userInfo: ', userInfo);
-
         return { userInfo };
     } catch (error) {
+        console.error(error);
+        
         return { userInfo: null };
     }
 }

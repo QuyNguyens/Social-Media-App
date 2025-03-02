@@ -2,7 +2,7 @@ import kyInstance from '@/lib/ky';
 import { useQuery } from '@tanstack/react-query';
 export default function useTrendTopicsInfo(userId: string, isAll: boolean){
 
-    var url = `${process.env.NEXT_PUBLIC_API_URL}/api/Post/hashtags`;
+    let url = `${process.env.NEXT_PUBLIC_API_URL}/api/Post/hashtags`;
     
     if(!isAll){
         url += `/${userId}`

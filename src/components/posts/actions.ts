@@ -22,9 +22,13 @@ export async function deletePost(id : string){
                 resolve({error: 'Delete failed', success: false})
             })
             .catch(error =>{
+                console.error(error);
+                
                 resolve({ error: "Something went wrong. Please try again", success: false });
             })
     } catch (error) {
+        console.error(error);
+        
         resolve({error: 'Delete failed', success: false})
         
     }

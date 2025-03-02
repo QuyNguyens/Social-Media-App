@@ -21,7 +21,7 @@ const Page = () => {
                 <div className="space-y-5">
                     <LoginForm />
                     <Link href="/signup" className="block text-center hover:underline">
-                        Don't have any account
+                        Don&apos;t have any account
                     </Link>
                 </div>
             </div>
