@@ -1,7 +1,6 @@
 "use client";
 
 import Post from "@/components/posts/Post";
-import { Button } from "@/components/ui/button";
 import kyInstance from "@/lib/ky";
 import { PostsPage } from "@/lib/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -9,9 +8,12 @@ import { Loader2 } from "lucide-react";
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
 import PostsLoadingSkeleton from "@/components/posts/PostsLoadingSkeleton";
 import DeletePostDialog from "@/components/posts/DeletePostDialog";
+import { useSession } from "./SessionProvider";
 
 const PAGE_SIZE = 10;
 export default function ForYouFeed() {
+
+    const {user} = useSession();
 
     const {
         data,
@@ -28,6 +30,7 @@ export default function ForYouFeed() {
               `${process.env.NEXT_PUBLIC_API_URL}/api/Post/get-all-posts`,
                {
                 searchParams: new URLSearchParams({
+                  userId: user.id,
                   cursor: pageParam ?? "",
                   pageSize: PAGE_SIZE.toString()
                 })
@@ -37,11 +40,12 @@ export default function ForYouFeed() {
         initialPageParam: null as string | null,
         getNextPageParam: (lastPage) => lastPage.nextCursor,
         staleTime: 1000 * 60 * 5,
+        enabled: !!user?.id
       });
     
 
   const posts = data?.pages.flatMap((page) => page.posts) || [];
-
+  
   if (status === "pending") {
     return <PostsLoadingSkeleton/>;
   }

@@ -1,6 +1,6 @@
 "use client"
 
-import { User } from "./app/types/user";
+import { User } from "./lib/types";
 
 function isTokenExpired(expiryDateStr : string) : boolean {
     const expiryDate = new Date(expiryDateStr);

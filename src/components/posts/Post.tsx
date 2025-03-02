@@ -6,6 +6,8 @@ import Link from "next/link";
 import UserAvatar from "../UserAvatar";
 import { formatRelativeDate } from "@/lib/utils";
 import PostMoreButton from "./PostMoreButton";
+import Linkify from "../Linkify";
+import UserTooltip from "../UserTooltip";
 
 interface PostProps{
     post: PostData
@@ -17,16 +19,21 @@ export default function Post({post} : PostProps){
     return <article className="group/post space-y-3 rounded-2xl bg-card p-5 shadow-sm">
             <div className="flex justify-between gap-3">
                 <div className="flex flex-wrap gap-3">
-                    <Link href={`/users/${post.email}`}>
-                        <UserAvatar avatarUrl={post.avatar}/>
-                    </Link>
-                    <div>
-                        <Link 
-                            href={`/users/${post.email}`}
-                            className="block font-medium hover:underline"
-                        >
-                            {post.userName}
+                    <UserTooltip user={post}>
+                        <Link href={`/users/${post.email}`}>
+                            <UserAvatar avatarUrl={post.avatar}/>
                         </Link>
+                    </UserTooltip>
+                    <div>
+                        <UserTooltip user={post}>
+
+                            <Link 
+                                href={`/users/${post.email}`}
+                                className="block font-medium hover:underline"
+                            >
+                                {post.userName}
+                            </Link>
+                        </UserTooltip>
                         <Link 
                             href={`/posts/${post.id}`}
                             className="block text-sm text-muted-foreground hover:underline">
@@ -40,10 +47,12 @@ export default function Post({post} : PostProps){
                     )
                 }
             </div>
-            <div className="white-space-pre-line break-words">
-                {post.content.split("\n").map((line, index) => (
-                    <p className="text-sm" key={index}>{line}</p>
-                ))}
-            </div>
+                <div className="white-space-pre-line break-words">
+                    {post.content.split("\n").map((line, index) => (
+                    <Linkify key={index}>
+                        <p className="text-sm">{line}</p>
+                    </Linkify>
+                    ))}
+                </div>
         </article>
 }

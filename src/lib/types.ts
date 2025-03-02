@@ -6,6 +6,7 @@ export interface Post{
     userName?: string;
     avatar?: string;
     email?: string;
+    isFollowed: boolean;
 }
 
 export interface User{

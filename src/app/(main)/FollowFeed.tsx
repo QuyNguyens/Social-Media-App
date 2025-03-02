@@ -6,6 +6,7 @@ import kyInstance from "@/lib/ky";
 import { PostsPage } from "@/lib/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+import { useSession } from "./SessionProvider";
 
 const PAGE_SIZE = 10;
 
@@ -15,6 +16,9 @@ interface FollowFeedProps{
 }
 
 const FollowFeed = ({userId, urlSub}: FollowFeedProps) => {
+
+  const {user} = useSession();
+  const followerId = user.id;
     const {
         data,
         fetchNextPage,
@@ -24,19 +28,23 @@ const FollowFeed = ({userId, urlSub}: FollowFeedProps) => {
         status,
       } = useInfiniteQuery({
         queryKey: ["post-feed", "following", userId],
-        queryFn: ({ pageParam = null }: { pageParam?: string | null }) =>
-          kyInstance
-            .get(
-              `${process.env.NEXT_PUBLIC_API_URL}/api/Post/${urlSub}`,
-               {
-                searchParams: new URLSearchParams({
-                  id: userId,
-                  cursor: pageParam ?? "",
-                  pageSize: PAGE_SIZE.toString()
-                })
-               }
-            )
-            .json<PostsPage>(),
+        queryFn: ({ pageParam = null }: { pageParam?: string | null }) => {
+          const searchParams = new URLSearchParams({
+            id: userId,
+            cursor: pageParam ?? "",
+            pageSize: PAGE_SIZE.toString(),
+          });
+        
+          if (urlSub === "posts-user") {
+            searchParams.set("followerId", followerId);
+          }
+        
+          return kyInstance
+            .get(`${process.env.NEXT_PUBLIC_API_URL}/api/Post/${urlSub}`, {
+              searchParams,
+            })
+            .json<PostsPage>();
+        },
         initialPageParam: null as string | null,
         getNextPageParam: (lastPage) => lastPage.nextCursor,
         staleTime: 1000 * 60 * 5,

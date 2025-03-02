@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "./ui/button";
 import kyInstance from "@/lib/ky";
 import { useSession } from "@/app/(main)/SessionProvider";
-import { Followers, User } from "@/lib/types";
+import { Followers, PostsPage, User } from "@/lib/types";
 
 
 interface FollowButtonProps {
@@ -21,6 +21,9 @@ const FollowButton = ({ userFollower, isFollowed, onFollowChange }: FollowButton
 
         const req = { UserId: user.id, UserIdFollow: userFollower.id };
 
+        
+        !isFollowed ? await kyInstance.post(urlFollow, { json: req }) : await kyInstance.post(urlUnFollow, { json: req });
+        
         queryClient.setQueryData(["follower-info", user.id], (oldData: Followers[] | undefined) => {
             if (!oldData) return [];
             return oldData.map(f => 
@@ -28,13 +31,27 @@ const FollowButton = ({ userFollower, isFollowed, onFollowChange }: FollowButton
             );
         });
 
-        !isFollowed ? await kyInstance.post(urlFollow, { json: req }) : await kyInstance.post(urlUnFollow, { json: req });
+        queryClient.setQueryData(["post-feed", "for-you"], (oldData: { pages: PostsPage[] } | undefined) => {
+            if (!oldData) return undefined;
+          
+            const data = {
+                ...oldData,
+                pages: oldData.pages.map((page) => ({
+                  ...page,
+                  posts: page.posts.map(post =>
+                    post.userId === userFollower.id ? { ...post, isFollowed: !isFollowed } : post
+                  ),
+                })),
+              };
+
+            return data;
+          });
 
         queryClient.invalidateQueries({ queryKey: ["post-feed", "following"] });
 
         if (onFollowChange) {
             onFollowChange(!isFollowed);
-            queryClient.invalidateQueries({ queryKey: ["follower-info", user.id] });
+            queryClient.invalidateQueries({ queryKey: ["follower-info", userFollower.id] });
         }
     }
 
