@@ -7,6 +7,7 @@ export interface Post{
     avatar?: string;
     email?: string;
     isFollowed: boolean;
+    urlImages: string[];
 }
 
 export interface User{

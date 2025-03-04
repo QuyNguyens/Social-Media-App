@@ -10,12 +10,14 @@ import { Button } from "@/components/ui/button";
 import { useQueryClient } from "@tanstack/react-query";
 
 import "./style.css";
+import UploadImages from "./UploadImages";
+import { useState } from "react";
 
 export default function PostEditor(){
 
+    const [fileUrls, setFileUrls] = useState<string[]>([]);
     const {user} = useSession();
     const queryClient = useQueryClient();
-
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
@@ -33,10 +35,11 @@ export default function PostEditor(){
     }) || "";
 
     async function onSubmit(){
-        await submitPost(input);
+        await submitPost(input, fileUrls);
         editor?.commands.clearContent();
         queryClient.invalidateQueries({ queryKey: ["post-feed", "for-you"] });
         queryClient.invalidateQueries({ queryKey: ["trend-topics", user.id] });
+        setFileUrls([]);
     }
 
     return (
@@ -48,6 +51,7 @@ export default function PostEditor(){
                     className="w-full max-h-[20rem] overflow-y-auto bg-background rounded-2xl px-5 py-3" />
              </div>
              <div className="flex justify-end">
+                <UploadImages fileUrls={fileUrls} setFileUrls={setFileUrls}/>
                 <Button
                     onClick={onSubmit}
                     disabled={!input.trim()}

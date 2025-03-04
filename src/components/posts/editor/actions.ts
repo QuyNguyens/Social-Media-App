@@ -4,7 +4,7 @@ import { validateRequest } from "@/auth";
 import { createPostSchema } from "@/lib/validation";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 
-export async function submitPost(input: string): Promise<{ error: string; success?: boolean }> {
+export async function submitPost(input: string, urlImages: string[]): Promise<{ error: string; success?: boolean }> {
     try {
         const { user } = await validateRequest();
 
@@ -23,7 +23,7 @@ export async function submitPost(input: string): Promise<{ error: string; succes
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ content }),
+            body: JSON.stringify({ content,urlImages }),
         });
 
         if (res.ok) {

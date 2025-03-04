@@ -8,6 +8,7 @@ import { formatRelativeDate } from "@/lib/utils";
 import PostMoreButton from "./PostMoreButton";
 import Linkify from "../Linkify";
 import UserTooltip from "../UserTooltip";
+import DisplayImages from "./editor/DisplayImages";
 
 interface PostProps{
     post: PostData
@@ -47,6 +48,8 @@ export default function Post({post} : PostProps){
                     )
                 }
             </div>
+            <div>
+
                 <div className="white-space-pre-line break-words">
                     {post.content.split("\n").map((line, index) => (
                     <Linkify key={index}>
@@ -54,5 +57,7 @@ export default function Post({post} : PostProps){
                     </Linkify>
                     ))}
                 </div>
+                <DisplayImages images={post.urlImages}/>
+            </div>
         </article>
 }
