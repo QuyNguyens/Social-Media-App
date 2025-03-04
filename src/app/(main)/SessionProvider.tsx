@@ -1,30 +1,32 @@
-"use client"
+"use client";
 
+import React, { createContext, useContext, useState } from "react";
 import { User } from "@/lib/types";
-import React, { createContext, useContext } from "react";
 
-export interface SessionContext{
-    user: User
+export interface SessionContextType {
+  user: User;
+  setUser: (user: User) => void;
 }
 
-const SessionContext = createContext<SessionContext | null>(null)
+const SessionContext = createContext<SessionContextType | null>(null);
 
 export default function SessionProvider({
-    children,
-    value
-} : React.PropsWithChildren<{value: SessionContext}>){
-    return (
-        <SessionContext.Provider value={value}>
-            {children}
-        </SessionContext.Provider>)
+  children,
+  initialUser
+}: React.PropsWithChildren<{ initialUser: User }>) {
+  const [user, setUser] = useState<User>(initialUser);
+    console.log("userProvider: ", user);
+  return (
+    <SessionContext.Provider value={{ user, setUser }}>
+      {children}
+    </SessionContext.Provider>
+  );
 }
 
-export function useSession(){
-    const context = useContext(SessionContext);
-
-    if(!context){
-        throw new Error("useSession must be used within a SessionProvider");
-    }
-
-    return context;
+export function useSession() {
+  const context = useContext(SessionContext);
+  if (!context) {
+    throw new Error("useSession must be used within a SessionProvider");
+  }
+  return context;
 }

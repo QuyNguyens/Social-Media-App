@@ -23,3 +23,9 @@ export type LoginValues = z.infer<typeof loginSchema>
 export const createPostSchema = z.object({
     content: requiredString,
 })
+
+export const updateUserProfileSchema = z.object({
+    userName: requiredString,
+})
+
+export type updateUserProfileValues = z.infer<typeof updateUserProfileSchema>

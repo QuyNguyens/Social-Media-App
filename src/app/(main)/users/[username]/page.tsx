@@ -2,7 +2,6 @@
 
 import UserAvatar from "@/components/UserAvatar";
 import { format } from "date-fns";
-import { Button } from "@/components/ui/button";
 import FollowButton from "@/components/FollowButton";
 import { useParams } from "next/navigation";
 import TrendsSidebar from "@/components/TrendsSidebar";
@@ -11,9 +10,10 @@ import { useEffect, useState } from "react";
 import { UserProfileInfo } from "@/lib/types";
 import { useSession } from "../../SessionProvider";
 import FollowFeed from "../../FollowFeed";
+import EditProfileButton from "./EditProfileButton";
 
 const Page = () => {
-    const [userInfo, setUserInfo] = useState<UserProfileInfo | null>(null);
+    const [userInfo, setUserInfo] = useState<UserProfileInfo | null>();
     const { user } = useSession();
     const { username } = useParams<{ username: string }>();
 
@@ -74,7 +74,7 @@ const Page = () => {
                             </div>
                         </div>
                         {userInfo && userInfo?.user.id === user.id ? (
-                            <Button>Edit Profile</Button>
+                            <EditProfileButton user={userInfo} setUserInfo={setUserInfo}/>
                         ) : (
                             userInfo && <FollowButton 
                                 userFollower={userInfo.user} 

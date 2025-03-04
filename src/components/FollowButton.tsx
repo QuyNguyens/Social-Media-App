@@ -49,7 +49,7 @@ const FollowButton = ({ userFollower, isFollowed, onFollowChange }: FollowButton
 
             return data;
           });
-
+          
         queryClient.invalidateQueries({ queryKey: ["post-feed", "following"] });
 
         if (onFollowChange) {

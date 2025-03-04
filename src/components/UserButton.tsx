@@ -19,7 +19,7 @@ export default function UserButton({className} : UserButtonProps){
 
     const {theme, setTheme} = useTheme();
     const queryClient = useQueryClient();
-
+    console.log('user: ', user);
     return <DropdownMenu>
         <DropdownMenuTrigger asChild>
             <button className={cn("flex-none rounded-full", className)}> 
@@ -31,7 +31,7 @@ export default function UserButton({className} : UserButtonProps){
                 logged in as @{user.userName}
             </DropdownMenuLabel>
             <DropdownMenuSeparator/>
-            <Link href={`/users/${user.userName}`}>
+            <Link href={`/users/${user.email}`}>
                 <DropdownMenuItem>
                     <UserIcon className="mr-2 size-4"/>
                     Profile

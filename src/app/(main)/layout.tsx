@@ -1,32 +1,42 @@
-"use client"
+"use client";
+
 import { validateRequest } from "@/auth";
 import { redirect } from "next/navigation";
-import SessionProvider, { SessionContext } from "./SessionProvider";
+import SessionProvider from "./SessionProvider";
 import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import Menubar from "./Menubar";
 
-export default function Layout({children} : {children : React.ReactNode}){
+export default function Layout({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<{ userName: string; email: string; id: string } | null>(null);
+  const [loading, setLoading] = useState(true);
 
-    const [user, setUser] = useState<SessionContext>({user:{userName: '', email: '', id: ''}});
+  useEffect(() => {
+    const getUser = async () => {
+      const { user } = await validateRequest();
+      if (!user) redirect("/login");
 
-    useEffect( () =>{
-        const getUser = async () =>{
-            const {user} = await validateRequest();
-            if(user == null) redirect('/login');
-            setUser({user: user})
-        }
-        getUser()
-    }, [])
+      setUser(user);
+      setLoading(false);
+    };
 
-    return <SessionProvider value={user}>
-        <div className="flex min-h-screen flex-col">
-            <Navbar/>
-            <div className="mx-auto max-w-7xl p-5 flex w-full grow gap-5">
-                <Menubar className="sticky top-[5.25rem] h-fit hidden sm:block flex-none space-y-3 rounded-2xl bg-card px-3 py-5 lg:px-5 shadow-sm xl:w-80"/>
-                {children}
-            </div>
-            <Menubar className="sticky bottom-0 flex w-full border-t justify-center gap-5 bg-card p-3 sm:hidden"/>
+    getUser();
+  }, []);
+
+  if (loading) {
+    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+  }
+
+  return (
+    <SessionProvider initialUser={user!}>
+      <div className="flex min-h-screen flex-col">
+        <Navbar />
+        <div className="mx-auto max-w-7xl p-5 flex w-full grow gap-5">
+          <Menubar className="sticky top-[5.25rem] h-fit hidden sm:block flex-none space-y-3 rounded-2xl bg-card px-3 py-5 lg:px-5 shadow-sm xl:w-80" />
+          {children}
         </div>
-        </SessionProvider>
+        <Menubar className="sticky bottom-0 flex w-full border-t justify-center gap-5 bg-card p-3 sm:hidden" />
+      </div>
+    </SessionProvider>
+  );
 }

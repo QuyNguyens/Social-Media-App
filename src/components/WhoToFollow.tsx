@@ -18,7 +18,7 @@ const WhoToFollow = ({userId}: WhoToFollowProps) => {
             data && data.map((user) =>(
                 <div key={user.id} className="flex items-center justify-between gap-3">
                     <Link 
-                        href={`/users/${user.userName}`}
+                        href={`/users/${user.email}`}
                         className="flex items-center gap-3"
                     >
                         <UserAvatar avatarUrl={user.avatar} className="flex-none"/>
