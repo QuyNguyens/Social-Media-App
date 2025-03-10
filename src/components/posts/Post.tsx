@@ -9,6 +9,8 @@ import PostMoreButton from "./PostMoreButton";
 import Linkify from "../Linkify";
 import UserTooltip from "../UserTooltip";
 import DisplayImages from "./editor/DisplayImages";
+import Like from "./Like";
+import BookMark from "./BookMark";
 
 interface PostProps{
     post: PostData
@@ -58,6 +60,11 @@ export default function Post({post} : PostProps){
                     ))}
                 </div>
                 <DisplayImages images={post.urlImages}/>
+            </div>
+            <hr className="text-muted-foreground"/>
+            <div className="flex justify-between items-center">
+                <Like userId={user.id} postId={post.id} likeCount={post.likeCount} isLikeByUser={post.isLikeByUser}/>
+                <BookMark userId={user.id} postId={post.id}  isBookMark={post.isBookMark}/>
             </div>
         </article>
 }

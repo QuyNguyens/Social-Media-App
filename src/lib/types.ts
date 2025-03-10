@@ -8,6 +8,9 @@ export interface Post{
     email?: string;
     isFollowed: boolean;
     urlImages: string[];
+    likeCount: number;
+    isLikeByUser: boolean;
+    isBookMark: boolean;
 }
 
 export interface User{
