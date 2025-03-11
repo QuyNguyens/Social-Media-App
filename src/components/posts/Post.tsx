@@ -11,6 +11,9 @@ import UserTooltip from "../UserTooltip";
 import DisplayImages from "./editor/DisplayImages";
 import Like from "./Like";
 import BookMark from "./BookMark";
+import Comments from "./comments/Comments";
+import { useState } from "react";
+import { MessageSquare } from "lucide-react";
 
 interface PostProps{
     post: PostData
@@ -18,6 +21,7 @@ interface PostProps{
 
 export default function Post({post} : PostProps){
     const {user} = useSession();
+    const [showComment, setShowComment] = useState(false);
 
     return <article className="group/post space-y-3 rounded-2xl bg-card p-5 shadow-sm">
             <div className="flex justify-between gap-3">
@@ -63,8 +67,20 @@ export default function Post({post} : PostProps){
             </div>
             <hr className="text-muted-foreground"/>
             <div className="flex justify-between items-center">
-                <Like userId={user.id} postId={post.id} likeCount={post.likeCount} isLikeByUser={post.isLikeByUser}/>
+                <div className="flex items-center gap-3">
+                    <Like userId={user.id} postId={post.id} likeCount={post.likeCount} isLikeByUser={post.isLikeByUser}/>
+                    <button onClick={() => setShowComment(!showComment)} className="flex items-center gap-2">
+                        <MessageSquare className="size-5"/>
+                        <span className="text-sm font-medium tabular-nums">
+                            {post?.comments?.length}{" "}
+                            <span className="hidden sm:inline">comments</span>
+                        </span>
+                    </button>
+                </div>
                 <BookMark userId={user.id} postId={post.id}  isBookMark={post.isBookMark}/>
             </div>
+            <hr className="text-muted-foreground"/>
+            {showComment && <Comments post={post} userLoggedId={user.id}/>
+            }
         </article>
 }

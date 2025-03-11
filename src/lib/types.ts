@@ -11,6 +11,7 @@ export interface Post{
     likeCount: number;
     isLikeByUser: boolean;
     isBookMark: boolean;
+    comments: Comment[];
 }
 
 export interface User{
@@ -45,4 +46,13 @@ export interface UserProfileInfo{
     user: Followers;
     postCount: number;
     followerCount: number;
+}
+
+export interface Comment{
+    id: string;
+    userId: string;
+    avatar: string;
+    email: string;
+    createAt: Date;
+    content: string;
 }
