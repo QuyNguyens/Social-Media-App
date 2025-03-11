@@ -3,7 +3,6 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { removeComment } from "./actions";
 import { Button } from "../../ui/button";
 import { useQueryClient } from "@tanstack/react-query";
-import { useSession } from "@/app/(main)/SessionProvider";
 
 interface DeleteCommentDialogProps{
     comment: Comment;
@@ -19,8 +18,6 @@ const DeleteCommentDialog = ({
     open,
     onClose
 } : DeleteCommentDialogProps) => {
-
-    const {user} = useSession();
 
     const queryClient = useQueryClient();
 
