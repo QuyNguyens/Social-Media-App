@@ -20,7 +20,8 @@ export interface User{
     email: string,
     phone?: string,
     avatar?: string,
-    createAt?: Date
+    createAt?: Date,
+    notificationCount?: number,
 }
 
 export interface PostsPage {
@@ -28,6 +29,10 @@ export interface PostsPage {
     nextCursor: string | null;
 }
 
+export interface NotificationsPage {
+    notifications: Notification[];
+    nextCursor: string | null;
+}
 export interface FollowerInfo{
     followers: number;
     isFollowedByUser: boolean;
@@ -55,4 +60,21 @@ export interface Comment{
     email: string;
     createAt: Date;
     content: string;
+}
+
+export interface Notification{
+    id: string;
+    issuer: Followers;
+    isReaded: boolean;
+    postId: string;
+    createAt: Date;
+    type: NotificationType;
+    content: string;
+
+}
+
+export enum NotificationType{
+    LIKE,
+    COMMENT,
+    FOLLOW
 }

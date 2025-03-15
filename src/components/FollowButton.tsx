@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "./ui/button";
 import kyInstance from "@/lib/ky";
 import { useSession } from "@/app/(main)/SessionProvider";
-import { Followers, PostsPage, User } from "@/lib/types";
+import { Followers, NotificationType, PostsPage, User } from "@/lib/types";
 
 
 interface FollowButtonProps {
@@ -18,11 +18,19 @@ const FollowButton = ({ userFollower, isFollowed, onFollowChange }: FollowButton
     async function followHandle() {
         const urlFollow = `${process.env.NEXT_PUBLIC_API_URL}/api/Follow/follow`;
         const urlUnFollow = `${process.env.NEXT_PUBLIC_API_URL}/api/Follow/unfollow`;
+        const urlNotification = `${process.env.NEXT_PUBLIC_API_URL}/api/Notificate/create-notificate`;
 
         const req = { UserId: user.id, UserIdFollow: userFollower.id };
         
+        const notificateReq = {
+            RecipientId: userFollower.id,
+            IssuerId: user.id,
+            Type: NotificationType.FOLLOW
+        }
+
         if (!isFollowed) {
             await kyInstance.post(urlFollow, { json: req });
+            await kyInstance.post(urlNotification, {json: notificateReq});
         } else {
             await kyInstance.post(urlUnFollow, { json: req });
         }

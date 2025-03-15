@@ -1,32 +1,49 @@
 import kyInstance from '@/lib/ky';
-import { PostsPage } from '@/lib/types';
+import { NotificationType, Post, PostsPage } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { Heart } from 'lucide-react';
 import React from 'react'
 
 interface LikeProps{
+    recipientId: string;
     userId: string;
     postId: string;
     isLikeByUser: boolean;
     likeCount: number;
+    post: Post;
+    setPost?: (post: Post) => void;
 }
 
-const Like = ({userId, postId, isLikeByUser, likeCount}: LikeProps) => {
+const Like = ({userId, recipientId, postId, isLikeByUser, likeCount,post, setPost}: LikeProps) => {
 
     const queryClient = useQueryClient();
 
     const handleLike = async () =>{
-        console.log("co vao day");
         const urlLike = `${process.env.NEXT_PUBLIC_API_URL}/api/Post/like`;
         const urlUnLike = `${process.env.NEXT_PUBLIC_API_URL}/api/Post/unlike`;
+        const urlNotification = `${process.env.NEXT_PUBLIC_API_URL}/api/Notificate/create-notificate`;
 
         const req = { UserId: userId, PostId: postId };
-        
+
+        const notificateReq = {
+                    RecipientId: recipientId,
+                    IssuerId: userId,
+                    Type: NotificationType.LIKE,
+                    PostId: postId
+                }
+
         if (!isLikeByUser) {
             await kyInstance.post(urlLike, { json: req });
+            if(recipientId !== userId){
+              await kyInstance.post(urlNotification, { json: notificateReq });
+            }
         } else {
             await kyInstance.delete(urlUnLike, { json: req });
+        }
+
+        if(setPost){
+          setPost({...post,isLikeByUser: !isLikeByUser, likeCount: isLikeByUser ? likeCount-1: likeCount+1})
         }
 
         queryClient.setQueryData(["post-feed", "for-you"], (oldData: { pages: PostsPage[] } | undefined) => {

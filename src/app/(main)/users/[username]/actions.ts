@@ -8,7 +8,6 @@ export function updateProfile(credentials: updateUserProfileValues, avatar: stri
         try{
             const {userName} = updateUserProfileSchema.parse(credentials);
             const urlUpdate = `${process.env.NEXT_PUBLIC_API_URL}/api/user/update`;
-            console.log("updateUrl: ", urlUpdate);
             fetch(urlUpdate, {
                 method: "POST",
                 headers: {

@@ -16,10 +16,11 @@ import { useState } from "react";
 import { MessageSquare } from "lucide-react";
 
 interface PostProps{
-    post: PostData
+    post: PostData;
+    setPost?: (post: PostData) => void;
 }
 
-export default function Post({post} : PostProps){
+export default function Post({post, setPost} : PostProps){
     const {user} = useSession();
     const [showComment, setShowComment] = useState(false);
 
@@ -68,7 +69,7 @@ export default function Post({post} : PostProps){
             <hr className="text-muted-foreground"/>
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                    <Like userId={user.id} postId={post.id} likeCount={post.likeCount} isLikeByUser={post.isLikeByUser}/>
+                    <Like post={post} setPost={setPost} userId={user.id} recipientId={post.userId} postId={post.id} likeCount={post.likeCount} isLikeByUser={post.isLikeByUser}/>
                     <button onClick={() => setShowComment(!showComment)} className="flex items-center gap-2">
                         <MessageSquare className="size-5"/>
                         <span className="text-sm font-medium tabular-nums">
@@ -80,7 +81,7 @@ export default function Post({post} : PostProps){
                 <BookMark userId={user.id} postId={post.id}  isBookMark={post.isBookMark}/>
             </div>
             <hr className="text-muted-foreground"/>
-            {showComment && <Comments post={post} userLoggedId={user.id}/>
+            {showComment && <Comments recipientId={post.userId} post={post} userLoggedId={user.id}/>
             }
         </article>
 }

@@ -14,8 +14,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const getUser = async () => {
       const { user } = await validateRequest();
+      
       if (!user) redirect("/login");
-
       setUser(user);
       setLoading(false);
     };

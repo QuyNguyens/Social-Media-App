@@ -15,7 +15,7 @@ export default function SessionProvider({
   initialUser
 }: React.PropsWithChildren<{ initialUser: User }>) {
   const [user, setUser] = useState<User>(initialUser);
-    console.log("userProvider: ", user);
+  
   return (
     <SessionContext.Provider value={{ user, setUser }}>
       {children}

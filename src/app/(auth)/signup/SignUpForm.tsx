@@ -30,7 +30,6 @@ const SignUpForm = () => {
 
         startTransition(async () =>{
             const {error,success} = await signUp(values);
-            console.log("success: ", success);
             if(success) redirect('/login')
             else setError(error)
         })
