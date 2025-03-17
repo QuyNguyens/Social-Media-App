@@ -1,5 +1,7 @@
 "use client";
 
+import kyInstance from "@/lib/ky";
+import { User } from "@/lib/types";
 import { signUpSchema, SignUpValues } from "@/lib/validation";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 
@@ -17,8 +19,12 @@ export function signUp(credentials: SignUpValues) {
                 },
                 body: JSON.stringify({ userName: username, email: email, password: password }),
             })
-                .then((res) => {
+                .then(async (res) => {
                     if (res.ok) {
+                        const result = await res.json() as User;
+                        
+                        await kyInstance.post("/api/upsert-user", {json: {result}});
+
                         resolve( {error: '', success: true});
                     }
                     resolve({ error: "Email already exists!!!", success: false });

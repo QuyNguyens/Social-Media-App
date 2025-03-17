@@ -78,3 +78,7 @@ export enum NotificationType{
     COMMENT,
     FOLLOW
 }
+
+export interface MessageCountInfo{
+    unreadCount: number;
+}

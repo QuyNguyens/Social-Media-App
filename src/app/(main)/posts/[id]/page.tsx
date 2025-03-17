@@ -8,14 +8,13 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-const page = () => {
+const Page = () => {
 
     const {id} = useParams<{id: string}>();
     const [post, setPost] = useState<PostData | null>();
     const queryClient = useQueryClient();
     
     useEffect(() =>{
-      console.log("co vao day");
       async function fetchPost(){
         const data = queryClient.getQueryData<{
           pages: PostsPage[];
@@ -51,4 +50,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

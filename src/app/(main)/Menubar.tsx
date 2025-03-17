@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button"
-import { Bell, Bookmark, Home, Mail } from "lucide-react"
+import { Bell, Bookmark, Home } from "lucide-react"
 import Link from "next/link"
 import { useSession } from "./SessionProvider"
+import MessageButton from "./MessageButton"
 
 interface MenuBarProps{
     className?: string
@@ -9,7 +10,8 @@ interface MenuBarProps{
 const Menubar = ({className} : MenuBarProps) => {
 
     const {user} = useSession();
-  return (
+
+  return (      
     <div className={className}>
         <Button 
             variant="ghost"
@@ -42,16 +44,7 @@ const Menubar = ({className} : MenuBarProps) => {
             </Link>
         </Button>
 
-        <Button 
-            variant="ghost"
-            className="flex items-center justify-start gap-3"
-            title="Messages"
-            asChild>
-                <Link href="/messages">
-                    <Mail/>
-                    <span className="hidden lg:inline">Messages</span>
-                </Link>
-        </Button>
+        <MessageButton initializeData={{unreadCount: 0}}/>
 
         <Button 
             variant="ghost"
